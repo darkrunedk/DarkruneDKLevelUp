@@ -7,9 +7,9 @@ https://mods.curse.com/addons/wow/darkrunelevelup
 ## How to install the addon?
 All you have to do is:
 
-1. Download the files to your computer somewhere you can find them (probably want to make a folder to them called DarkruneDKLevelUp and put them there).
+1. Download the DarkruneDKLevelUp folder to your computer somewhere you can find them.
 
-2. Move the following files into the addons folder (normally on Windows it's at C:\Program Files\World of Warcraft\Interface\Addons).
+2. Move the DarkruneDKLevelUp folder into the addons folder (normally on Windows it's at C:\Program Files\World of Warcraft\Interface\Addons).
 
 3. Start World of Warcraft and click the addon button and see if it shows up. If it does, you have done it correctly.
 
