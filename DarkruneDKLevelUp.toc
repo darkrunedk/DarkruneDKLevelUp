@@ -1,0 +1,12 @@
+## Interface: 70000
+## Title: |c00640000DarkruneDKLevelUp|r
+## Version: 0.25
+## Notes: Helps while leveling and adds a few custom commands as well. See /dluhelp for more info.
+## Author: |cFF660000DarkruneDK|r
+## SavedVariables: DLUSettings
+## DefaultState: enabled
+## X-Website: www.darkrune.dk
+
+core.lua
+party.lua
+pvp.lua
