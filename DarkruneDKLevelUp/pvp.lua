@@ -12,6 +12,8 @@ local settingsFrame = CreateFrame("Frame", "DarkruneSettingsFrame");
 local shouted = false;
 local expiration = nil;
 
+local chatprefix = "<DLU> ";
+
 -- Settings functions
 function loadAbilityNames(abilityNum, abilities, abilityNames)
 	for i = 1, abilityNum do
@@ -43,7 +45,7 @@ function checkForDebuffRogue()
 			link = GetSpellLink(spellId);
 			
 			if (shouted == false) then
-				SendChatMessage("Rogue detected! (got hit by " .. link ..")", "YELL");
+				SendChatMessage(chatprefix .. "Rogue detected! (got hit by " .. link ..")", "YELL");
 				shouted = true;
 			end
 		end
@@ -63,7 +65,7 @@ function checkForDebuffDruid()
 			link = GetSpellLink(spellId);
 			
 			if (shouted == false) then
-				SendChatMessage("Druid detected! (got hit by " .. link ..")", "YELL");
+				SendChatMessage(chatprefix .. "Druid detected! (got hit by " .. link ..")", "YELL");
 				shouted = true;
 			end
 		end

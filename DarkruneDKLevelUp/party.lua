@@ -17,7 +17,7 @@ function partyLevelUp(self, event, unitID)
 	if (UnitInParty(unitID) and UnitPlayerControlled(unitID) and not UnitIsUnit(unitID, "player") and not IsInRaid() and DLUSettings.partyEnabled) then
 		local partyMemberName = UnitName(unitID);
 		local InInstanceGroup = IsInGroup(LE_PARTY_CATEGORY_INSTANCE);
-		local class, classFileName = UnitClass(unitID);
+		local _, classFileName = UnitClass(unitID);
 		local newLevel = UnitLevel(unitID);
 		
 		local congratzTable = CLASS_TALENT_LEVELS["DEFAULT"];
@@ -26,12 +26,9 @@ function partyLevelUp(self, event, unitID)
 			congratzTable = CLASS_TALENT_LEVELS[classFileName];
 		end
 		
-		print(congratzTable[2] == newLevel);
-		
-		for i = 1, #congratzTable do
-			if (newLevel == congratzTable[i]) then
+		for _, level in pairs(congratzTable) do
+			if (level == newLevel) then
 				local randomCongratz = {"Gratz, %s", "Gz, %s", "Keep it up, %s"};
-				
 				local congratzString = string.format(randomCongratz[math.random(#randomCongratz)], partyMemberName);
 				
 				if (InInstanceGroup) then
@@ -39,6 +36,8 @@ function partyLevelUp(self, event, unitID)
 				elseif (IsInGroup()) then
 					SendChatMessage(congratzString, "PARTY");
 				end
+				
+				break;
 			end
 		end
 	end

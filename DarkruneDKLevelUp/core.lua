@@ -1,7 +1,11 @@
 -- variables --
 local addOnName = "DarkruneDKLevelUp";
 local addOnNameWithColor = GetAddOnMetadata(addOnName, "Title");
-local version, internalVersion, date, uiVersion = GetBuildInfo();
+local _, _, _, uiVersion = GetBuildInfo();
+local mountTable = {
+	waterMounts = {},
+	pvpMounts = {}
+};
 
 local maxLevel = GetMaxPlayerLevel();
 local class, classFileName = UnitClass("player");
@@ -283,7 +287,27 @@ local function getItemLevel()
 end
 
 local function testIt()
-	--
+	for i = 1, #mountTable.pvpMounts do
+		local mountName = C_MountJournal.GetMountInfoByID(mountTable.pvpMounts[i]);
+		print(mountName)
+	end
+end
+
+local function mountUp()
+	local sumMountId = 0;
+	local swimming = IsSwimming();
+	
+	if (swimming and #mountTable.waterMounts > 0) then
+		index = random(#mountTable.waterMounts);
+		sumMountId = mountTable.waterMounts[index];
+		C_MountJournal.SummonByID(sumMountId);
+	elseif (UnitInBattleground("player") and #mountTable.pvpMounts > 0) then
+		index = random(#mountTable.pvpMounts);
+		sumMountId = mountTable.pvpMounts[index];
+		C_MountJournal.SummonByID(sumMountId);
+	else
+		C_MountJournal.SummonByID(sumMountId);
+	end
 end
 
 local function loadProfessions()
@@ -367,7 +391,7 @@ end;
 
 SLASH_BUILDINFO1 = "/buildinfo";
 SlashCmdList.BUILDINFO = function()
-	print("Internal version: " .. internalVersion .. " | UI Version: " .. uiVersion);
+	print("UI Version: " .. uiVersion);
 end
 
 SLASH_UPGRADEABLE1 = "/dlugu";
@@ -404,6 +428,16 @@ SlashCmdList.TESTIT = function()
 	testIt();
 end
 
+SLASH_MOUNTUP1 = "/dlumount";
+SlashCmdList.MOUNTUP = function()
+	local isOutdoors = IsOutdoors();
+	if (isOutdoors) then
+		mountUp();
+	else
+		print("You need to be outdoors to use mounts.");
+	end
+end
+
 SLASH_XP_HELP1 = "/dluhelp";
 SlashCmdList.XP_HELP = function()
 	print("Following commands can be used with " .. addOnNameWithColor .. ":");
@@ -433,9 +467,10 @@ playerFrame:SetScript("OnEvent", playerLevelUp);
 
 settingsFrame:RegisterEvent("PLAYER_LOGIN");
 settingsFrame:SetScript("OnEvent", function() 
-getSettings()
 
+getSettings()
 SetUpAddonOptions();
+loadPlayerMounts();
 
 settingsFrame:UnregisterEvent("PLAYER_LOGIN")
 end);
@@ -469,6 +504,24 @@ function getExpansionName()
 	end
 	
 	return expansionName;
+end
+
+function loadPlayerMounts()
+	local mountCount = C_MountJournal.GetMountIDs();
+	
+	for i = 1, #mountCount do
+		local _, _, _, _, isUsable, _, _, _, _, _, _, mountID = C_MountJournal.GetMountInfoByID(mountCount[i]);
+		if (isUsable == true) then
+			-- Water mounts
+			if (mountID == 125 or mountID == 449 or mountID == 488) then
+				table.insert(mountTable.waterMounts, mountID);
+			end
+			-- PvP mounts
+			if (mountID > 74 and mountID < 83 or mountID == 272 or mountID == 108 or mountID == 162 or mountID == 220 or mountID == 338 or mountID == 305 or mountID > 293 and mountID < 304 or mountID == 330 or mountID == 332 or mountID == 423 or mountID == 555 or mountID == 641 or mountID == 756 or mountID == 784 or mountID > 841 and mountID < 844) then
+				table.insert(mountTable.pvpMounts, mountID);
+			end
+		end
+	end
 end
 
 -- UI functions
