@@ -1,6 +1,6 @@
 ## Interface: 70100
 ## Title: |c00CC0000DarkruneDK|r|c00008E00LevelUp|r
-## Version: 0.43
+## Version: 0.61
 ## Notes: Helps while leveling and adds a few custom commands as well. See /dluhelp for more info.
 ## Author: |c00CC0000DarkruneDK|r
 ## SavedVariables: DLUSettings
@@ -9,5 +9,6 @@
 ## X-Notes: This addon has a few option pages, which can be used to turn on and off some options.
 
 core.lua
+player.lua
 party.lua
 pvp.lua

@@ -4,7 +4,7 @@ local partyFrame = CreateFrame("Frame", "DarkrunePartyFrame");
 local settingsFrame = CreateFrame("Frame", "DarkruneSettingsFrame");
 
 -- Settings
-function loadSettings()
+local function loadSettings()
 	DLUSettings = DLUSettings or {
 		partyEnabled = false,
 		pvpEnabled = false,
@@ -13,10 +13,9 @@ function loadSettings()
 end
 
 -- Important functions --
-function partyLevelUp(self, event, unitID)
+local function partyLevelUp(self, event, unitID)
 	if (UnitInParty(unitID) and UnitPlayerControlled(unitID) and not UnitIsUnit(unitID, "player") and not IsInRaid() and DLUSettings.partyEnabled) then
 		local partyMemberName = UnitName(unitID);
-		local InInstanceGroup = IsInGroup(LE_PARTY_CATEGORY_INSTANCE);
 		local _, classFileName = UnitClass(unitID);
 		local newLevel = UnitLevel(unitID);
 		
@@ -31,7 +30,7 @@ function partyLevelUp(self, event, unitID)
 				local randomCongratz = {"Gratz, %s", "Gz, %s", "Keep it up, %s"};
 				local congratzString = string.format(randomCongratz[math.random(#randomCongratz)], partyMemberName);
 				
-				if (InInstanceGroup) then
+				if (IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) then
 					SendChatMessage(congratzString, "INSTANCE_CHAT");
 				elseif (IsInGroup()) then
 					SendChatMessage(congratzString, "PARTY");

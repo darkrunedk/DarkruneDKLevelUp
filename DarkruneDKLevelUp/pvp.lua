@@ -1,9 +1,9 @@
 -- Variables --
-local rogueAbilities = {6770, 408, 1833};
+local rogueAbilities = {408, 703, 1833, 6770};
 local rogueAbilitiesNum = #rogueAbilities;
 local rogueAbilitiesNames = {};
 
-local druidAbilities = {22570}
+local druidAbilities = {1822, 22570}
 local druidAbilitiesNum = #druidAbilities;
 local druidAbilitiesNames = {};
 
@@ -12,10 +12,11 @@ local settingsFrame = CreateFrame("Frame", "DarkruneSettingsFrame");
 local shouted = false;
 local expiration = nil;
 
-local chatprefix = "<DLU> ";
+local prefix = "DLU";
+local chatprefix = "<" .. prefix .."> ";
 
 -- Settings functions
-function loadAbilityNames(abilityNum, abilities, abilityNames)
+local function loadAbilityNames(abilityNum, abilities, abilityNames)
 	for i = 1, abilityNum do
 		local name = GetSpellInfo(abilities[i]);
 		abilityNames[i] = name;
@@ -23,7 +24,7 @@ function loadAbilityNames(abilityNum, abilities, abilityNames)
 end
 
 -- Settings
-function loadSettings()
+local function loadSettings()
 	DLUSettings = DLUSettings or {
 		partyEnabled = false,
 		pvpEnabled = false,
@@ -31,13 +32,13 @@ function loadSettings()
 	}
 end
 
-function loadTables()
+local function loadTables()
 	loadAbilityNames(rogueAbilitiesNum, rogueAbilities, rogueAbilitiesNames);
 	loadAbilityNames(druidAbilitiesNum, druidAbilities, druidAbilitiesNames);
 end
 
 -- functions
-function checkForDebuffRogue()
+local function checkForDebuffRogue()
 	for i = 1, rogueAbilitiesNum do
 		if (UnitDebuff("player", rogueAbilitiesNames[i])) then
 			local _, _, _, _, _, _, expirationTime, _, _, _, spellId = UnitDebuff("player", rogueAbilitiesNames[i]);
@@ -57,7 +58,7 @@ function checkForDebuffRogue()
 	end
 end
 
-function checkForDebuffDruid()
+local function checkForDebuffDruid()
 	for i = 1, druidAbilitiesNum do
 		if (UnitDebuff("player", druidAbilitiesNames[i])) then
 			local _, _, _, _, _, _, expirationTime, _, _, _, spellId = UnitDebuff("player", druidAbilitiesNames[i]);
@@ -77,7 +78,7 @@ function checkForDebuffDruid()
 	end
 end
 
-function checkForDebuffs()
+local function checkForDebuffs()
 	if (DLUSettings.pvpEnabled and UnitInBattleground("player")) then
 		checkForDebuffDruid();
 		checkForDebuffRogue();
